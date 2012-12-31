@@ -1,0 +1,68 @@
+\section{Abstract}
+	The performance results for five different Garbage Collection (GC) algorithms for Non-Volatile Memory Devices for three access patterns are presented in this report. The access patterns include a long-tailed distribution as well as Uniform distribution. The results indicate that Round-Robin style GC algorithms perform much better in all cases than Generational algorithms. This is counter-intuitive to the existing norms. Invocation of the GC in Flash devices is determined by the fullness of the device. Even at low fullness levels, Generational GCs have very low efficiency. In this paper, we compare the efficiency and the time taken for the individual GCs at fullness levels ranging from 2\% to 98\%.  Existing research looks into using Flash as storage for data and RAM as cache \cite{Gupta09, Budilovsky11, Tjioe12}. We analyze the performance of a Flash when it is used in place of a RAM.
+
+\subsection*{Keywords}
+	Garbage Collection, Flash memory, Statistical access pattern.
+
+%-----------------------------------------------------------------------------------
+\section{Introduction}
+	Flash memory is an important non volatile storage media due to its low power consumption and small size. It is increasingly being used as a storage device in embedded devices. Embedded devices are constrained by power and low memory capacity. Hence there is a need to have a very efficient primary storage system that allows fast read and write operations and thereby less power consumption. Flash devices generally have fast read accesses but have very slow write accesses. \\
+
+\begin{center}
+   \begin{tabular} {|  c | c | c | }
+       \hline
+	Read time(ms) & Write time (ms) & Erase time (ms) \\ \hline
+	4 & 5 & 6 \\ 
+       \hline
+   \end{tabular}
+\end{center}
+
+There are 2 major Flash devices available today - NAND and NOR. NAND flash is mainly used for storage of large amounts of data as its cost-per-bit is very low compared to NOR \cite{Toshiba}. NOR flash has the advantage that it can execute code, a feature called eXecute-In-Place (XIP).
+
+\begin{center}
+\captionof{table}{A comparison of NAND and NOR Flash} \label{NANDvsNOR}
+   \begin{tabular} {|  c | c | c | }
+       \hline
+	{\bf Design Characteristic} & {\bf NAND flash} & {\bf NOR Flash} \\ \hline
+	Cost-per-bit & Low & High \\ \hline
+	File Storage use & Easy & Hard \\ \hline
+	Code execution & Hard & Easy\\ \hline
+	Capacity & High & Low\\ \hline
+	Write speed & High & Low\\ \hline
+	Read speed & Medium & High\\ \hline
+	Active power & Low & High\\ \hline
+	Standby power & Medium & Low\\
+       \hline
+   \end{tabular}
+\end{center}
+
+Table~\ref{NANDvsNOR} refers to NAND vs NOR \cite{Toshiba}.
+
+An important component that has an overhead and affects the performance of the storage system is the Garbage Collector (GC) algorithm. This report quantifies the performance of different GCs against different statistical traffic patterns such as Uniform, Pareto and Bi-Modal. Based on prior experiments, we have observed that the traffic pattern for the data can occur in short bursts or can arrive at regular intervals. This is the reason why we chose to select the afore-mentioned traffic patterns. A simulator for the Flash file system as well as the GC algorithms were coded in Matlab. We compare the performance of five different GC algorithms against three traffic patterns. Our experiments indicate that Round-Robin style algorithms have better efficiency than Generational algorithms.\\
+
+There are two major GC algorithms that have been studied for Log-Structured File Systems - Greedy and Cost-Benefit analysis \cite{Menon98}. 
+
+In Solid State Devices such as NAND and NOR based Flash, new data is always written out-of-place. In a Log-Structured File System, this reduces the amount of free space and a Garbage Collector algorithm is invoked which defragments the device by moving all valid data together and erasing the invalid data. This is a critical factor in the performance and life-time of a Flash device. In this paper, we present our work in analyzing five different GC algorithms and compare their performances against various parameters. We also present the theoretical model behind our simulation and explain the reason behind the results we have obtained. A major contribution of our work is to measure the performance of Flash devices against traffic patterns that are generally observed in practice.
+The major goals of our work are:
+\begin{itemize}
+\item To find out if Flash can work as a good primary storage system. 
+\item To create performance benchmarks and understand which Garbage Collection algorithm is better. 
+\item To create statistical models to test the GC algorithms.
+\end{itemize}
+
+We simulated an application which is both equally read and write dominant. We also tested an application which has only writes.
+
+The report is organized as follows: section 3 gives details on related work being conducted currently. Section 4 mentions about the current state-of-the-art in Flash algorithms and section 5 provides details on the Mathematical models behind our simulations. We conclude by outlining our results in section 6, details about our simulator in section 7 and finally talk about future work in this area.
+
+%-----------------------------------------------------------------------------------
+\subsection{Methodology}
+The GC and the applications will be implemented in Matlab 2011b. The tests will be run on the Ohio Super Computer center’s cluster called Oakley. The fullness level will range from 2% to 98% and the simulations will run for 100,000 read/write accesses per fullness level. The simulations are done for all three traffic patterns for all 6 GC algorithms.
+
+%-----------------------------------------------------------------------------------
+\subsection*{Implementation details:}
+The application generates random records and sizes using the rand() function in Matlab. For Pareto distribution, each record is assigned a weight which decides the usage of a record. After the records are generated, based on a coin toss, it is decided whether the next operation will be a read or a write. Every time the GC is accessed, details such as amount of bytes moved, blocks erased, are captured. These details are then used to plot the required graphs. 
+
+%-----------------------------------------------------------------------------------
+\section{Related Work}
+
+
