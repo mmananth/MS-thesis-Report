@@ -6,18 +6,20 @@
 
 %-----------------------------------------------------------------------------------
 \section{Introduction}
-	Flash memory is an important non volatile storage media due to its low power consumption and small size. It is increasingly being used as a storage device in embedded devices. Embedded devices are constrained by power and low memory capacity. Hence there is a need to have a very efficient primary storage system that allows fast read and write operations and thereby less power consumption. Flash devices generally have fast read accesses but have very slow write accesses. \\
+	Flash memory is a powerful and cost-effective solid-state non volatile storage technology that is widely being used in mobile devices and other embedded devices. Compared to traditional Hard Disk Drives, they have low power consumption and a small size. Embedded devices are constrained by power and low memory capacity. Hence there is a need to have a very efficient primary storage system that allows fast read and write operations and thereby less power consumption. Flash devices generally have fast read accesses but have very slow write accesses. \\
 
 \begin{center}
    \begin{tabular} {|  c | c | c | }
        \hline
-	Read time(ms) & Write time (ms) & Erase time (ms) \\ \hline
+	{\bf Read time(ms)} & {\bf Write time (ms)} & {\bf Erase time (ms)} \\ \hline
 	4 & 5 & 6 \\ 
        \hline
    \end{tabular}
 \end{center}
 
-There are 2 major Flash devices available today - NAND and NOR. NAND flash is mainly used for storage of large amounts of data as its cost-per-bit is very low compared to NOR \cite{Toshiba}. NOR flash has the advantage that it can execute code, a feature called eXecute-In-Place (XIP).
+There are 2 major Flash devices available today - NAND and NOR. NAND flash has a very small cell size and is mainly used for storage of large amounts of data as its cost-per-bit is very low compared to NOR \cite{Toshiba}. NAND flash is organized into blocks and each block is divided into pages. Block size of a typical NAND flash is 16KB and the page size can be 512B (32 pages in a block). Read and Write operations happen take place on pages whereas erase happens on blocks. NOR flash on the other hand, have individual cells connected in parallel which allow it to achieve random access. This enables it to achieve short read times and allow individual bits to be set (called reprogramming). This has the advantage that it can execute code, a feature called eXecute-In-Place (XIP). \\
+
+Every block on a NAND flash can be written-to or erased only a limited number of times (in order of 1 million or $10^6$ cycles). Writing to or erasing a block beyond this limit can result in "wearing" out of the Flash, which can lead to write failures or can return invalid data for read operations. Data cannot be written over already written areas (called in-place update). Data can only be written to areas that have already been erased. Therefore if some data has to be updated on the flash, it is first written to a new area and the old data is marked invalid. This is called out-of-place-update. After many cycles of writes, the entire flash is fragmented with valid and invalid data and the flash quickly runs out of space for new data. This is when the Flash invokes the Garbage Collector whose task is to collect all valid data in a block, write it to a new location and erase the old block. This paves the way for new data to be written to the flash. But this operation of moving data to a new location and erasing a block is costly and has to be kept to a minimum. Based on the above points, some of the challenges for a good GC algorithm is: (a) To maintain "wear-levelling" of the flash blocks (b) Reduce the amount of time taken to move data and erase blocks.
 
 \begin{center}
 \captionof{table}{A comparison of NAND and NOR Flash} \label{NANDvsNOR}
@@ -36,13 +38,14 @@ There are 2 major Flash devices available today - NAND and NOR. NAND flash is ma
    \end{tabular}
 \end{center}
 
-Table~\ref{NANDvsNOR} refers to NAND vs NOR \cite{Toshiba}.
+Table~\ref{NANDvsNOR} compares the characteristics of NAND and NOR Flash devices \cite{Toshiba}. 
+\\
 
 An important component that has an overhead and affects the performance of the storage system is the Garbage Collector (GC) algorithm. This report quantifies the performance of different GCs against different statistical traffic patterns such as Uniform, Pareto and Bi-Modal. Based on prior experiments, we have observed that the traffic pattern for the data can occur in short bursts or can arrive at regular intervals. This is the reason why we chose to select the afore-mentioned traffic patterns. A simulator for the Flash file system as well as the GC algorithms were coded in Matlab. We compare the performance of five different GC algorithms against three traffic patterns. Our experiments indicate that Round-Robin style algorithms have better efficiency than Generational algorithms.\\
 
-There are two major GC algorithms that have been studied for Log-Structured File Systems - Greedy and Cost-Benefit analysis \cite{Menon98}. 
+There are three major GC algorithms that have been studied for Log-Structured File Systems - Greedy, Cost-Benefit analysis and Cost-Age Time (CAT) \cite{Menon98, Kwon07}. \\
 
-In Solid State Devices such as NAND and NOR based Flash, new data is always written out-of-place. In a Log-Structured File System, this reduces the amount of free space and a Garbage Collector algorithm is invoked which defragments the device by moving all valid data together and erasing the invalid data. This is a critical factor in the performance and life-time of a Flash device. In this paper, we present our work in analyzing five different GC algorithms and compare their performances against various parameters. We also present the theoretical model behind our simulation and explain the reason behind the results we have obtained. A major contribution of our work is to measure the performance of Flash devices against traffic patterns that are generally observed in practice.
+In Solid State Devices such as NAND and NOR based Flash, new data is always written out-of-place. In a Log-Structured File System, this reduces the amount of free space and a Garbage Collector algorithm is invoked which defragments the device by moving all valid data together and erasing the invalid data. This is a critical factor in the performance and life-time of a Flash device. In this paper, we present our work in analyzing five different GC algorithms and compare their performances against various parameters. We also present the theoretical model behind our simulation and explain the reason behind the results we have obtained. A major contribution of our work is to measure the performance of Flash devices against traffic patterns that are generally observed in practice. \\
 The major goals of our work are:
 \begin{itemize}
 \item To find out if Flash can work as a good primary storage system. 
