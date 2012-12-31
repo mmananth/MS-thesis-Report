@@ -1,0 +1,223 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+%\usepackage{amsmath}
+
+
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+
+
+\title{Analysis of Garbage Collector Algorithms for Flash devices}
+\author{The Samraksh Company}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\DeclareMathSizes{11}{19}{13}{9}
+
+\begin{document}
+\maketitle
+
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+    {-3.5ex \@plus -1ex \@minus -.2ex}%
+    {2.3ex \@plus.2ex}%
+    {\normalfont\large\bfseries}}
+\makeatother
+
+
+\section{Theoretical model - FIFE Uniform}
+
+Assumptions:\\
+Total blocks in a flash device, B = 128\\
+The size of a block, BlockSize = 8192\\
+The device size is, deviceSize = B * BlockSize\\
+The fullness level ranges between 1\% and 98\% and let N be the count of records per fullness level.\\
+Let the count of dummy records per block be 1. dummyRec = 1\\
+Average number of records per block, 
+\begin{equation}R_b = \frac{BlockSize}{AvgRecSize} - dummyRec\end{equation}\\
+
+
+Total number of accesses is, (Number of blocks * Records per block) - (Number of records)\\
+\begin{equation}NumOfAccess = ((B-1) * Rb) -  (N-1)\end{equation}\\
+NumOfAccess denotes the number of accesses after which a record in a certain block is accessed again. The equation can also be written as: $((B-1) * Rb) - (B-1) * E(ARB_c)$\\
+where $(B-1) * E(ARB_c)$ is the total active records in the flash, which is N.\\
+\\
+
+((B-1) * Rb) gives the total records (both active and inactive) in the entire flash and subtracting N removes the active records and leaves only the inactive. Therefore after going through the entire set of active and inactive records, we access a certain active record (hence the reason behind subtracting (N-1)). The above equation gives the best case scenario where N records are spread evenly across (B-1) blocks.\\
+\\
+
+The expectation for a record to be hit is $\frac{1}{N}$, which is the pdf for Uniform distribution. Let the probability of missing a record be denoted by $P_m$. 
+\begin{equation}Pm = \frac{(N-1)}{N}\end{equation}\\
+Let the expectation of active records per block that is going to be cleaned be denoted by $E(ARB_c)$\\
+\\
+
+Expectation is then, $E(ARB_c) = (P_m)^{NumOfAccess} * Rb$\\
+\\
+The intuition behind the equation is that, a record is missed for NumOfAccess times before it is hit. Multiplying by Rb gives the relation for all records in a certain block.\\
+
+
+The expectation of the average number of records per block can be of the exponential form $1-e^{\lambda . x}$ where x is the fullness of flash (\%). To find $\lambda$ we can equate the exponential function to $R_b$ when the flash is 100\% full. 
+The corresponding equation is:
+$$1-e^{\lambda . x} = R_b$$
+$$\lambda = \frac{log(1 - R_b)}{100}$$\\
+where 100 represents the fullness of the flash in percentage.\\
+\\
+Expectation can therefore be given as: $$E(ARB_c) = (1 - e^{\lambda . x})$$\\
+where x is the fullness of flash (\%)
+\\
+
+For a Uniform Distribution, let the total accesses to the Flash be: 100,000. Out of this, let 1/2 be writes. Hence totalWrites = 50000\\
+\\
+
+The total number of times  Garbage Collector(GC) is called decides the total move cost. During one cycle, when active records are moved from one block (x) to another (y), next invocation of the GC is related to the amount of free space in block y. Hence the relation for number of times GC is invoked is:\\
+\begin{equation}NumberGCRuns = \frac{totalWrites}{(R_b - E(ARB_c))}\end{equation}\\
+where ${(R_b - E(ARB_c))}$ gives the number of free slots where records can be stored.\\
+\\
+
+The fullness of the Flash is given by:
+\begin{equation}FlashFullness = \frac{((N * AvgRecSize)}{deviceSize}\end{equation}\\
+
+The expected move cost is:
+\begin{equation}E(MoveCost) = E(ARB_c) * AvgRecSize * NumberGCRuns\end{equation}\\
+
+The useful write cost is cost involved in writing data to the Flash without any overhead of moving or erasing records: \begin{equation}UsefulWriteCost = totalWrites * AvgRecSize\end{equation}\\
+
+The actual write cost is the cost of erasing and moving records in order to write a new record:
+\begin{equation}ActualWriteCost = UsefulWriteCost + ExpMoveCost\end{equation}\\
+
+Efficiency of a Flash device is then:
+\begin{equation}Efficiency = \frac{UsefulWriteCost}{ActWriteCost}\end{equation}\\
+
+%-----------------------------------------------------------------------------------
+
+\section{Theoretical model - FIFE Pareto}
+Assumptions:\\
+Total blocks in a flash device, B = 128\\
+The size of a block, BlockSize = 8192\\
+The device size is, deviceSize = B * BlockSize\\
+The fullness level ranges between 1\% and 98\% and let N be the count of records per fullness level.\\
+Let the count of dummy records per block be 1. dummyRec = 1\\
+Average number of records per block, 
+\begin{equation}R_b = \frac{BlockSize}{AvgRecSize} - dummyRec\end{equation}\\
+
+
+Total number of accesses is, (Number of blocks * Records per block) - (Number of records)\\
+\begin{equation}NumOfAccess = ((B-1) * Rb) -  (N-1)\end{equation}\\
+
+Minimum possible value of a variable X below which it will be accessed with increased frequency
+$$X_m = 0.2$$
+
+Positive parameter for Pareto distribution is: 
+$$\alpha = 1.3 $$
+
+
+Average number of records per block can also be represented as, 
+$$1-e^{\lambda . x} = R_b$$
+$$\lambda = \frac{log(1 - R_b)}{100}$$\\
+where 100 represents the fullness of the flash (\%)\\
+
+The calculated value of $\lambda$ is used for different substitutions of x (flash fullness)  to get the expectation of active records per block that is going to be cleaned.
+$$E(ARB_c) = 1-e^{\lambda . x}$$
+
+The expectation for a record to be hit is the mean of a random variable for Pareto distribution, which is given by:\\
+$$E(X) = \left\{\frac{\alpha . X_m}{\alpha - 1} \right.  if \alpha > 1$$
+
+Therefore, expectation of a miss for Pareto distribution is:
+$$P_m = 1 - \frac{\alpha . X_m}{\alpha - 1} $$
+
+The expectation of active records in the block set to be cleaned can be assumed to be exponentially distributed. Expectation can be given as: $$E(ARB_c) = (1 - e^{\lambda . x})$$\\
+where x is the fullness of flash.
+\\
+
+%-----------------------------------------------------------------------------------
+
+\section{Theoretical model - 2-Gen Uniform}
+Assumptions:\\
+Average size of a record = s\\
+Size of Gen1 = $F_1$\\
+Size of Gen2 = $F_2$\\
+\\
+Total records that can be accomodated in Gen 1, $R_{gen1} = \frac{F_1}{s} $\\
+\\
+Total records that can be accomodated in Gen 2, $R_{gen2} = \frac{F_2}{s}$\\
+\\
+$X_1$ = Expectation of Active Records in Gen 1\\
+$X_2$ = Expectation of Active Records in Gen 2\\
+\\
+Probability of a miss, $P_m = \frac{(N - 1)}{N}$\\
+\\
+Records moved over to Gen 2 during GC is $\delta_2$\\
+Records left over in Gen 1 after GC is $\delta_1 = X_1 - \delta_2$\\
+\begin{equation}X_1 = \delta_1 + \delta_2\end{equation}
+
+\begin{equation}X_1 = {P_m}^{A_1} * R_{gen1}\end{equation}
+
+\begin{equation}X_2 = {P_m}^{A_2} * R_{gen2}\end{equation}
+\\
+Count of accesses between cleans of Gen 1, $A_1 = \frac{F_1}{s} - \delta_1$\\
+Count of accesses between cleans of Gen 2, $A_2 = \frac{F_2}{s} - \delta_2$\\
+\\
+Count of accesses between cleans of Gen 2 is, $A_2 = A_1 * R_{21}$, where $R_{21}$ is factor defined below\\
+Ratio of cleans between Gen 1 and 2 is, $R_{21} = \frac{Free Space Remaining in Gen 2}{X_1}$\\
+\\
+Free Space remaining in Gen 2, $FS_2 = R_{gen2} - X_2$\\
+Therefore, $R_{21} = \frac{FS_2}{X_1}$\\
+
+%-----------------------------------------------------------------------------------
+%\subsection{A subsection}
+%More text.
+
+\end{document}
