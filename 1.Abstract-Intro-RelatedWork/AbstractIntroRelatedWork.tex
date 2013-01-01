@@ -53,6 +53,7 @@ The major goals of our work are:
 \item To create statistical models to test the GC algorithms.
 \end{itemize}
 
+One challenge that we faced before starting with our work was the lack of real-world applications (like an app store) that can simulate the various access patterns. Therefore we created the benchmarking applications also in Matlab. We used the rand function in matlab which generates numbers with Uniform distribution. For Pareto, we added a weight to the numbers which followed a long-tail distribution.
 We simulated an application which is both equally read and write dominant. We also tested an application which has only writes.
 
 The report is organized as follows: section 3 gives details on related work being conducted currently. Section 4 mentions about the current state-of-the-art in Flash algorithms and section 5 provides details on the Mathematical models behind our simulations. We conclude by outlining our results in section 6, details about our simulator in section 7 and finally talk about future work in this area.
@@ -64,13 +65,14 @@ The report is organized as follows: section 3 gives details on related work bein
 \begin{SCfigure}
 	\centering
 	\includegraphics[width=0.48\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Flash-Block-structure.png}
-	\captionof{figure}{Fragmentation of blocks during steady state of the Flash device}
+	\captionof{figure}{Fragmentation of blocks during steady state of the Flash device. Also shown are the Log, Clean and Erase points.}
 \end{SCfigure}
 
+The Log File System that we implement makes use of three pointers which facilitate the write operations. Log pointer always points at a location where the write operation can take place. Clean Pointer indicates the location in the Flash until which there are no active records and the Erase pointer which always moves one block at a time points at the block which was last erased. 
 
 %-----------------------------------------------------------------------------------
 \subsection{Methodology}
-The GC and the applications will be implemented in Matlab 2011b. The tests will be run on the Ohio Super Computer center’s cluster called Oakley. The fullness level will range from 2% to 98% and the simulations will run for 100,000 read/write accesses per fullness level. The simulations are done for all three traffic patterns for all 6 GC algorithms.
+The GC and the applications will be implemented in Matlab 2011b. The tests were run on the Ohio Super Computer center’s cluster called Oakley. The fullness level will range from 2% to 98% and the simulations will run for 100,000 read/write accesses per fullness level. The simulations are done for all three traffic patterns for all 6 GC algorithms.
 
 %-----------------------------------------------------------------------------------
 \subsection{Implementation details:}

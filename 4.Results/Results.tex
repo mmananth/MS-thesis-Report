@@ -1,13 +1,13 @@
 \section{Performance criteria}
 	There are several measurements that indicate the performance of the GC algorithms. They are plotted and the different graphs that are generated are as follows:
 \begin{itemize}
-\item Efficiency Vs Fullness (normal scale)
+\item {\bf Efficiency Vs Fullness (normal scale)}
 \subitem Efficiency is the primary parameter for deciding which GC is better than the rest. It denotes the amount of work done in order to write data. Lesser the work done better is the GC.
-\item Efficiency Vs Fullness (log scale)
+\item {\bf Efficiency Vs Fullness (log scale)}
 \subitem This is the log (base 10) representation of the above graph. These denote how fast or slow efficiency of a GC changes. 
-\item GC time
+\item {\bf GC time}
 \subitem Total time taken by a GC beginning from its invocation till it finds sufficient space to store a record. This is also an important criterion in deciding on a GC.
-\item Fullness Vs Actual Write cost.
+\item {\bf Fullness Vs Actual Write cost}
 \subitem Actual write cost is used to calculate the Efficiency of the GC algorithm. Comparing the write cost with the erase cost and the overall efficiency helps in understanding why a given GC performs the way it does.
 \end{itemize}
 
