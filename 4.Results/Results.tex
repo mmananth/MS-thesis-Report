@@ -1,3 +1,15 @@
+\section{Performance criteria}
+	There are several measurements that indicate the performance of the GC algorithms. They are plotted and the different graphs that are generated are as follows:
+1.	Efficiency Vs Fullness (normal scale)
+a.	Efficiency is the primary parameter for deciding which GC is better than the rest. It denotes the amount of work done in order to write data. Lesser the work done better is the GC.
+2.	Efficiency Vs Fullness (log scale)
+a.	This is the log (base 10) representation of the above graph. These denote how fast or slow efficiency of a GC changes. 
+3.	GC time
+a.	Total time taken by a GC beginning from its invocation till it finds sufficient space to store a record. This is also an important criterion in deciding on a GC.
+4.	Fullness Vs Actual Write cost.
+a.	Actual write cost is used to calculate the Efficiency of the GC algorithm. Comparing the write cost with the erase cost and the overall efficiency helps in understanding why a given GC performs the way it does.
+
+
 \section{Results}
 \includegraphics [width=3.5in,height=2.5in] {C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
 \includegraphics [width=3.5in,height=2.5in] {C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/1Gen-simulation-theoretical-Dec16/EfficiencyVsFullness.png}\\
