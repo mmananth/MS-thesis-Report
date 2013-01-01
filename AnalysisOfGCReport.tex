@@ -10,7 +10,6 @@
 \usepackage{amsmath}
 
 
-
 %%% Examples of Article customizations
 % These packages are optional, depending whether you want the features they provide.
 % See the LaTeX Companion or other references for full information.
@@ -30,7 +29,7 @@
 \usepackage{booktabs} % for much better looking tables
 \usepackage{array} % for better arrays (eg matrices) in maths
 \usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
-\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+%\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
 \usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
 % These packages are all incorporated in the memoir class to one degree or another...
 
@@ -69,6 +68,20 @@
 
 \usepackage{caption}
 \usepackage{import}
+
+%------------------------
+%For positioning images and to have a box around them
+%------------------------
+\usepackage{float}
+%\floatstyle{boxed} 
+\restylefloat{figure}
+\usepackage{subfloat}
+%------------------------
+
+%------------------------
+% Multi-line comment
+%------------------------
+\newcommand{\comment}[2]{#2}
 
 %%% END Article customizations
 

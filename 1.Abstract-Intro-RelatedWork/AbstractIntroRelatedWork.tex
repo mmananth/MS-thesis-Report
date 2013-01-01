@@ -61,6 +61,8 @@ The report is organized as follows: section 3 gives details on related work bein
 \subsection{Log Structured File System}
 	Due to increasing capacity and reduction in accessing times of RAM, reads have become quite fast and writes take up bulk of the time in a typical embedded device. Hence there is a need for a file system that provides fast write access. A \emph{log structured file system} is one such system that writes data sequentially in a log-like manner \cite{Rosenblum91}. This reduces the write time as there is no structure other than logs in a device to be maintained and thereby reducing the amount of data seeks. But in order for a log-structured file system to operate efficiently, it needs to have large amounts of free space to write new data. LFS also allow fast recovery from crashes which is not present in traditional file systems as they have to scan the entire set of data in order to build the index.
 
+\includegraphics [width=3.5in,height=2.5in] {C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Flash-Block-structure.png}
+
 %-----------------------------------------------------------------------------------
 \subsection{Methodology}
 The GC and the applications will be implemented in Matlab 2011b. The tests will be run on the Ohio Super Computer center’s cluster called Oakley. The fullness level will range from 2% to 98% and the simulations will run for 100,000 read/write accesses per fullness level. The simulations are done for all three traffic patterns for all 6 GC algorithms.
