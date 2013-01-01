@@ -76,6 +76,10 @@
 %\floatstyle{boxed} 
 \restylefloat{figure}
 \usepackage{subfloat}
+\setlength{\fboxsep}{1mm} %padding thickness for boxes around images
+\setlength{\fboxrule}{1pt} %border thickness for boxes around images
+\usepackage{sidecap}	%To display text next to images
+\usepackage{wrapfig}	%To wrap text around images
 %------------------------
 
 %------------------------
@@ -123,6 +127,10 @@ $\oplus$ The Samraksh Company, Dublin, OH \\
 \makeatother
 
 %--------------------------------------------------------------------------------------------------------
+%\input{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/Foreword/Foreword}
+
+\tableofcontents
+
 \input{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/1.Abstract-Intro-RelatedWork/AbstractIntroRelatedWork}
 \input{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/2.Modelling/Modelling}
 \input{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/3.TheoreticalModel/TheoreticalModel}
