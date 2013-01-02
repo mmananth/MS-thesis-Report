@@ -1,36 +1,98 @@
 \section{Simulation Setup}
 
-\begin{SCfigure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Simulation-Flow-chart.png}
-	\captionof{figure}{The {\bf Main} program controls the number of times the simulation is to be run and which application gets called among other things. It also collects the results returned by the {\bf Application} and generates the graphs. It invokes the {\bf Application} program which contains the implementation for Uniform, Pareto or BiModal type of distributions. Based on the toss of a coin, it decides if the next operation will be a read or a write. Every read and write operation invokes the {\bf Emulator} which contains functionalities such as reading/writing a record, maintaining the indices of the records within the Flash and so on. When space runs out, the {\bf Emulator} invokes the {\bf Garbage Collector} whose primary purpose is to free up space by moving around active records and erasing a block of inactive records. It is successful if it finds sufficient space for the next record to be inserted and it returns an exception back to the Emulator if it is not able to find space in the entire Flash.}
-\end{SCfigure}
+	\captionof{figure}{Simulator Flow chart} \label{Simulator-FlowChart}
+\end{figure}
+
+As shown in figure~\ref{Simulator-FlowChart}, {\bf Main} program controls the number of times the simulation is to be run and which application gets called among other things. It also collects the results returned by the {\bf Application} and generates the graphs. It invokes the {\bf Application} program which contains the implementation for Uniform, Pareto or BiModal type of distributions. Based on the toss of a coin, it decides if the next operation will be a read or a write. Every read and write operation invokes the {\bf Emulator} which contains functionalities such as reading/writing a record, maintaining the indices of the records within the Flash and so on. When space runs out, the {\bf Emulator} invokes the {\bf Garbage Collector} whose primary purpose is to free up space by moving around active records and erasing a block of inactive records. It is successful if it finds sufficient space for the next record to be inserted and it returns an exception back to the Emulator if it is not able to find space in the entire Flash.
 
 
 \subsection{Functions used in Simulator}
 
-\begin{itemize}
-\item {\bf Main}
-\subitem {\emph runAppUniformDistribution(appRunCount)}
-\subsubitem 	Arguments: appRunCount - Number of times the application is to be executed.
-\subsubitem 	Return value: None
-\subsubitem 	Functionality: Invokes the application.
+\begin{center}
+\begin{tabular}{ |c| p{5cm} | }
+	\hline
+	\multicolumn{2}{ |c| } {Main} \\
+	\hline
+		\multicolumn{2}{ |c| }{\textit{runAppUniformDistribution}} \\
+	\hline
+		\multirow{1}{*} {\textbf{Parameter}} & \textbf{Description} \\ \hline
+		appRunCount & Application run count \\
+		appRunCount & Application run count \\
 
-\item {\bf Application}
-\subitem {\emph AppUniformDistribution(seedVal,numOfRecords,RWAccessCnt,runIndex)}
-\subsubitem 	Arguments: 	
+		\hline
+		\multirow{1}{*} {\textbf{Return Value}} & \textbf{Description} \\ \hline
+		appRunCount & Application run count \\
+		appRunCount & Application run count \\
+	\hline
+\end{tabular}
+\end{center}
+%
+\qquad
+%
+\begin{center}
+\begin{tabular}{ |c| p{5cm} | }
+	\hline
+	\multicolumn{2}{ |c| } {Application} \\
+	\hline
+		\multicolumn{2}{ |c| }{\textit{AppUniformDistribution}} \\
+	\hline
+		\multirow{1}{*}{\textbf{Parameter}} & \textbf{Description} \\ \hline
+		seedVal & Application run count \\
+		seedVal & Application run count \\
 
-\begin{tabbing}
-	\= seedVal - Number of times the application is to be executed.\\
-	\> numOfRecords - \\
-	\> RWAccessCnt - \\
-	\> runIndex - \\
-\end{tabbing}
+		\hline
+		\multirow{1}{*}{\textbf{Return Value}} & \textbf{Description} \\ \hline
+		seedVal & Application run count \\
+		seedVal & Application run count \\
+	\hline
+\end{tabular}
+\end{center}
+%
+\qquad
+%
+\begin{center}
+\begin{tabular}{ |c| p{5cm} | }
+	\hline
+	\multicolumn{2}{ |c| } {Emulator} \\
+	\hline
+		\multicolumn{2}{ |c| }{\textit{runAppUniformDistribution}} \\
+	\hline
+		\multirow{1}{*}{\textbf{Parameter}} & \textbf{Description} \\ \hline
+		appRunCount & Application run count \\
+		seedVal & Application run count \\
 
-\subsubitem 	Return value: None
-\subsubitem 	Functionality: Invokes the application.
- 	
-\end{itemize}
+		\hline
+		\multirow{1}{*}{\textbf{Return Value}} & \textbf{Description} \\ \hline
+		seedVal & Application run count \\
+		seedVal & Application run count \\
+	\hline
+\end{tabular}
+\end{center}
+%
+\qquad
+%
+\begin{center}
+\begin{tabular}{ |c| p{5cm} | }
+	\hline
+	\multicolumn{2}{ |c| } {Garbage Collector} \\
+	\hline
+		\multicolumn{2}{ |c| }{\textit{runAppUniformDistribution}} \\
+	\hline
+		\multirow{1}{*}{\textbf{Parameter}} & \textbf{Description} \\ \hline
+		appRunCount & Application run count \\
+		seedVal & Application run count \\
+
+		\hline
+		\multirow{1}{*}{\textbf{Return Value}} & \textbf{Description} \\ \hline
+		seedVal & Application run count \\
+		seedVal & Application run count \\
+	\hline
+\end{tabular}
+\end{center}
+
 
 %-----------------------------------------------------------------------------------
 \subsection*{Summary}
