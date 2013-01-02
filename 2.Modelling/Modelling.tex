@@ -22,30 +22,59 @@ This is similar to the N-Gen algorithm, except that the amount of data that is m
 The GC that will be implemented will be the one that has the best efficiency for all three traffic patterns. Depending on the outcome of this project, a single GC might be implemented or a hybrid approach will be chosen where one type of GC is used for certain fullness levels and another type for other levels of fullness.
 
 \begin{figure}
-\centering
-	\subfloat[Cumulative accesses for all variables]{\fbox{{\includegraphics[width=3.1in]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Uniform-CumulAccess.png}} }  \label{Uniform-cumul} }
-	\subfloat[Inter-access delay for one variable]{\fbox{{\includegraphics[width=3.1in]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Uniform-InterAccessDelay.png}} } \label{Uniform-IAD} }
-	\caption{Uniform Distribution} 
-	\label{fig:EcUND} 
-\end{figure} 
+        \centering
+        \begin{subfigure}[b]{0.4\textwidth}
+                \centering
+                \fbox{\includegraphics[width=\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Uniform-CumulAccess.png} } 
+                \caption{Cumulative accesses for all variables} \label{Uniform-cumul}
+        \end{subfigure}
+         ~~~ %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.4\textwidth}
+                \centering
+                \fbox{\includegraphics[width=\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Uniform-InterAccessDelay.png} }
+                \caption{Inter-access delay for one variable} \label{Uniform-IAD}
+        \end{subfigure}
+        \caption{Uniform Distribution}
+\end{figure}
+
+%\hfill %To add horizontal space in between figures
+
+\begin{figure}
+        \centering
+        \begin{subfigure}[b]{0.4\textwidth}
+                \centering
+                \fbox{\includegraphics[width=\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Pareto-CumulAccess.png} }
+                \caption{Cumulative accesses for all variables} \label{Pareto-cumul}
+        \end{subfigure}
+        ~~~ %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.4\textwidth}
+                \centering
+                \fbox{\includegraphics[width=\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Pareto-InterAccessDelay.png} }
+                \caption{Inter-access delay for one variable} \label{Pareto-IAD}
+        \end{subfigure}
+        \caption{Pareto Distribution}
+\end{figure}
+
+%\hfill %To add horizontal space in between figures
+
+\begin{figure}
+        \centering
+        \begin{subfigure}[b]{0.4\textwidth}
+                \centering
+                \fbox{\includegraphics[width=\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/BiModal.png} }
+                \caption{Cumulative accesses for all variables} \label{BiModal-cumul}
+        \end{subfigure}
+        \caption{BiModal Distribution}
+\end{figure}
+
 
 Figure ~\ref{Uniform-cumul} indicates the cumulative percentage of access for all variables. The graph shows a linear rise in the plot and this means that all variables are equally likely to be picked up by the application. The figure ~\ref{Uniform-IAD} on the other hand shows the time between accessing the same variable. Except a sharp rise towards the end, the plot increases linearly. This means that the variable once accessed, will be accessed randomly at another instance in time. 
 
-\begin{figure}
-\centering
-	\subfloat[Cumulative accesses for all variables]{\fbox{{\includegraphics[width=3.1in]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Pareto-CumulAccess.png}} }  \label{Pareto-cumul} }
-	\subfloat[Inter-access delay for one variable]{\fbox{{\includegraphics[width=3.1in]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Pareto-InterAccessDelay.png}} }  \label{Pareto-IAD} }
-	\caption{Pareto Distribution} 
-	\label{fig:EcUND} 
-\end{figure} 
-
 Figure ~\ref{Pareto-cumul} indicates the cumulative percentage of access for all variables. The graph shows an exponential rise in the plot and this means thatl variables towards the end are more likely to be picked up than those at the beginning, by the application. The figure ~\ref{Pareto-IAD} on the other hand shows the time between accessing the same variable.There is a sharp rise towards the end, and rest of the plot is linear. This means that the variable once accessed, may not be accessed at another instance in time except towards the end where it gets accessed much more often.
 
-\begin{figure}
-\centering
-	\subfloat[BiModal distribution for all variables]{\fbox{{\includegraphics[width=3.1in]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/BiModal.png}} }  \label{BiModal-cumul} }
-	\caption{BiModal Distribution} 
-	\label{fig:EcUND} 
-\end{figure} 
-
 Figure ~\ref{BiModal-cumul} indicates the cumulative percentage of access for all variables. The graph shows a linear rise in the plot and this means that all variables are equally likely to be picked up by the application.
+
+
+

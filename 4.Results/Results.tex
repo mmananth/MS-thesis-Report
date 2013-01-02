@@ -11,10 +11,29 @@
 \subitem Actual write cost is used to calculate the Efficiency of the GC algorithm. Comparing the write cost with the erase cost and the overall efficiency helps in understanding why a given GC performs the way it does.
 \end{itemize}
 
-
+%#####################################################################
 \section{Results}
 
+%=====================================================================
 \subsection{Uniform Distribution}
+	Results only for individual GC algorithms against the traffic patterns.
+
+\subsubsection{FIFE}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/ExecutionResults/RWAccessCnt-100000-11-1-2012/Plots-100000-11-1-2012-639/EfficiencyVsFullness-11-1-2012-639.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm.}	
+\end{figure}
+
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/ExecutionResults/RWAccessCnt-100000-11-1-2012/Plots-100000-11-1-2012-639/RdWrEraseVsFullness-11-1-2012-639.png}
+	\captionof{figure}{Plots that show the costs of Read,Write and Erase vs Fullness for FIFE GC algorithm.}
+\end{SCfigure}
+
+
+\subsubsection{LAC}
 
 \begin{SCfigure}
 	\centering
@@ -22,31 +41,167 @@
 	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
 \end{SCfigure}
 
+\subsubsection{3-Generation}
+
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{N-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{Eta-N-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+%---------------------------------------------------------------------------------------------------------------------------------------
+\subsection{Pareto Distribution}
+
+\subsubsection{FIFE}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{LAC}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{3-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{N-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{Eta-N-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+
+%---------------------------------------------------------------------------------------------------------------------------------------
+\subsection{BiModal Distribution}
+
+\subsubsection{FIFE}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{LAC}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{3-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{N-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{Eta-N-Generation}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+
+%====================================================================
+\subsection{Efficiency Vs Fullness and other graphs - five GCs}
+
+\subsubsection{Uniform Distribution}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{Pareto Distribution}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{BiModal Distribution}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+
+%====================================================================
+\subsection{Theoretical and Simulation results - Uniform Distribution - with different percentages of access}
+	Combination of theoretical and simulation results. Attempts to beat FIFE's efficiency by generational algorithms by accessing 20\%, 40\%, 60\%, 80\% and 100\% of the records.	
+
+\subsubsection{FIFE}
+\begin{SCfigure}
+	\centering
+	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/FIFE-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
+	\captionof{figure}{shows the Efficiency vs Fullness plot for FIFE GC algorithm. It also includes the theoretical plot as well. }
+\end{SCfigure}
+
+\subsubsection{1-Generation}
 \begin{SCfigure}
 	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/1Gen-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
 	\captionof{figure}{This is another test}
 \end{SCfigure}
 
+\subsubsection{2-Generation}
 \begin{SCfigure}
 	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/2Gen-simulation-theoretical-Dec16/EfficiencyVsFullness.png}
 	\captionof{figure}{This is another test}
 \end{SCfigure}
 
+\subsubsection{3-Generation}
 \begin{SCfigure}
 	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/3Gen-simulation-theoretical-Dec18/EfficiencyVsFullness.png}
 	\captionof{figure}{This is another test}
 \end{SCfigure}
 
+\subsubsection{N-Generation}
 \begin{SCfigure}
 	\includegraphics[width=3.5in, height=2.5in]{C:/Ananth/FlashBasedFS/GC-StatisticalModel/Regular-CompactAndClean-GarbageCollector/Theoritical-Plots/Plots-Dec16/NGen-simulation-theoretical-Dec20/EfficiencyVsFullness.png}
 	\captionof{figure}{This is another test}
 \end{SCfigure}
 
-
-\subsection{Pareto Distribution}
-
-
-\subsection{Bi-Modal Distribution}
+%====================================================================
 
 
 
