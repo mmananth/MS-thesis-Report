@@ -6,6 +6,33 @@
 
 %-----------------------------------------------------------------------------------
 \section{Introduction}
+	One challenge that we faced before starting with our work was the lack of real-world applications (like an app store) that can simulate the various access patterns. Therefore we created the benchmarking applications also in Matlab. We used the rand function in matlab which generates numbers with Uniform distribution. For Pareto, we added a weight to the numbers which followed a long-tail distribution.
+We simulated an application which is both equally read and write dominant. We also tested an application which has only writes.
+
+The report is organized as follows: section 3 gives details on related work being conducted currently. Section 4 mentions about the current state-of-the-art in Flash algorithms and section 5 provides details on the Mathematical models behind our simulations. We conclude by outlining our results in section 6, details about our simulator in section 7 and finally talk about future work in this area.
+
+%-----------------------------------------------------------------------------------
+\subsection{Log Structured File System}
+	Due to increasing capacity and reduction in accessing times of RAM, reads have become quite fast and writes take up bulk of the time in a typical embedded device. Hence there is a need for a file system that provides fast write access. A \emph{log structured file system} is one such system that writes data sequentially in a log-like manner \cite{Rosenblum91}. This reduces the write time as there is no structure other than logs in a device to be maintained and thereby reducing the amount of data seeks. But in order for a log-structured file system to operate efficiently, it needs to have large amounts of free space to write new data. LFS also allow fast recovery from crashes which is not present in traditional file systems as they have to scan the entire set of data in order to build the index.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.48\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Flash-Block-structure.png}
+	\captionof{figure}{Fragmentation of blocks during steady state of the Flash device. Also shown are the Log, Clean and Erase points.}
+\end{figure}
+
+The Log File System that we implement makes use of three pointers which facilitate the write operations. Log pointer always points at a location where the write operation can take place. Clean Pointer indicates the location in the Flash until which there are no active records and the Erase pointer which always moves one block at a time points at the block which was last erased. 
+
+%-----------------------------------------------------------------------------------
+\subsection{Methodology}
+The GC and the applications will be implemented in Matlab 2011b. The tests were run on the Ohio Super Computer center’s cluster called Oakley. The fullness level will range from 2% to 98% and the simulations will run for 100,000 read/write accesses per fullness level. The simulations are done for all three traffic patterns for all 6 GC algorithms.
+
+%-----------------------------------------------------------------------------------
+\subsection{Implementation details:}
+The application generates random records and sizes using the rand() function in Matlab. For Pareto distribution, each record is assigned a weight which decides the usage of a record. After the records are generated, based on a coin toss, it is decided whether the next operation will be a read or a write. Every time the GC is accessed, details such as amount of bytes moved, blocks erased, are captured. These details are then used to plot the required graphs. 
+
+%-----------------------------------------------------------------------------------
+\section{Background}
 	Flash memory is a powerful and cost-effective solid-state non volatile storage technology that is widely being used in mobile devices and other embedded devices. Compared to traditional Hard Disk Drives, they have low power consumption and a small size. Embedded devices are constrained by power and low memory capacity. Hence there is a need to have a very efficient primary storage system that allows fast read and write operations and thereby less power consumption. Flash devices generally have fast read accesses but have very slow write accesses. \\
 
 \begin{center}
@@ -19,10 +46,10 @@
 
 There are 2 major Flash devices available today - NAND and NOR. NAND flash has a very small cell size and is mainly used for storage of large amounts of data as its cost-per-bit is very low compared to NOR \cite{Toshiba}. NAND flash is organized into blocks and each block is divided into pages. Block size of a typical NAND flash is 16KB and the page size can be 512B (32 pages in a block). Read and Write operations happen take place on pages whereas erase happens on blocks. NOR flash on the other hand, have individual cells connected in parallel which allow it to achieve random access. This enables it to achieve short read times and allow individual bits to be set (called reprogramming). This has the advantage that it can execute code, a feature called eXecute-In-Place (XIP). \\
 
-Every block on a NAND flash can be written-to or erased only a limited number of times (in order of 1 million or $10^6$ cycles). Writing to or erasing a block beyond this limit can result in "wearing" out of the Flash, which can lead to write failures or can return invalid data for read operations. Data cannot be written over already written areas (called in-place update). Data can only be written to areas that have already been erased. Therefore if some data has to be updated on the flash, it is first written to a new area and the old data is marked invalid. This is called out-of-place-update. After many cycles of writes, the entire flash is fragmented with valid and invalid data and the flash quickly runs out of space for new data. This is when the Flash invokes the Garbage Collector whose task is to collect all valid data in a block, write it to a new location and erase the old block. This paves the way for new data to be written to the flash. But this operation of moving data to a new location and erasing a block is costly and has to be kept to a minimum. Based on the above points, some of the challenges for a good GC algorithm is: (a) To maintain "wear-levelling" of the flash blocks (b) Reduce the amount of time taken to move data and erase blocks.
+Every block on a NAND flash can be written-to or erased only a limited number of times (in order of 1 million or $10^6$ cycles). Writing to or erasing a block beyond this limit can result in ``wearing" out of the Flash, which can lead to write failures or can return invalid data for read operations. Data cannot be written over already written areas (called in-place update). Data can only be written to areas that have already been erased. Therefore if some data has to be updated on the flash, it is first written to a new area and the old data is marked invalid. This is called out-of-place-update. After many cycles of writes, the entire flash is fragmented with valid and invalid data and the flash quickly runs out of space for new data. This is when the Flash invokes the Garbage Collector whose task is to collect all valid data in a block, write it to a new location and erase the old block. This paves the way for new data to be written to the flash. But this operation of moving data to a new location and erasing a block is costly and has to be kept to a minimum. Based on the above points, some of the challenges for a good GC algorithm is: (a) To maintain ``wear-levelling" of the flash blocks (b) Reduce the amount of time taken to move data and erase blocks.
 
 \begin{center}
-\captionof{table}{A comparison of NAND and NOR Flash} \label{NANDvsNOR}
+%\captionof{table}{A comparison of NAND and NOR Flash} \label{NANDvsNOR}
    \begin{tabular} {|  c | c | c | }
        \hline
 	{\bf Design Characteristic} & {\bf NAND flash} & {\bf NOR Flash} \\ \hline
@@ -53,32 +80,17 @@ The major goals of our work are:
 \item To create statistical models to test the GC algorithms.
 \end{itemize}
 
-One challenge that we faced before starting with our work was the lack of real-world applications (like an app store) that can simulate the various access patterns. Therefore we created the benchmarking applications also in Matlab. We used the rand function in matlab which generates numbers with Uniform distribution. For Pareto, we added a weight to the numbers which followed a long-tail distribution.
-We simulated an application which is both equally read and write dominant. We also tested an application which has only writes.
-
-The report is organized as follows: section 3 gives details on related work being conducted currently. Section 4 mentions about the current state-of-the-art in Flash algorithms and section 5 provides details on the Mathematical models behind our simulations. We conclude by outlining our results in section 6, details about our simulator in section 7 and finally talk about future work in this area.
-
-%-----------------------------------------------------------------------------------
-\subsection{Log Structured File System}
-	Due to increasing capacity and reduction in accessing times of RAM, reads have become quite fast and writes take up bulk of the time in a typical embedded device. Hence there is a need for a file system that provides fast write access. A \emph{log structured file system} is one such system that writes data sequentially in a log-like manner \cite{Rosenblum91}. This reduces the write time as there is no structure other than logs in a device to be maintained and thereby reducing the amount of data seeks. But in order for a log-structured file system to operate efficiently, it needs to have large amounts of free space to write new data. LFS also allow fast recovery from crashes which is not present in traditional file systems as they have to scan the entire set of data in order to build the index.
-
-\begin{SCfigure}
-	\centering
-	\includegraphics[width=0.48\textwidth]{C:/Ananth/OSU/CETI/MS-Thesis/MS-thesis-Report/imgs/Flash-Block-structure.png}
-	\captionof{figure}{Fragmentation of blocks during steady state of the Flash device. Also shown are the Log, Clean and Erase points.}
-\end{SCfigure}
-
-The Log File System that we implement makes use of three pointers which facilitate the write operations. Log pointer always points at a location where the write operation can take place. Clean Pointer indicates the location in the Flash until which there are no active records and the Erase pointer which always moves one block at a time points at the block which was last erased. 
-
-%-----------------------------------------------------------------------------------
-\subsection{Methodology}
-The GC and the applications will be implemented in Matlab 2011b. The tests were run on the Ohio Super Computer center’s cluster called Oakley. The fullness level will range from 2% to 98% and the simulations will run for 100,000 read/write accesses per fullness level. The simulations are done for all three traffic patterns for all 6 GC algorithms.
-
-%-----------------------------------------------------------------------------------
-\subsection{Implementation details:}
-The application generates random records and sizes using the rand() function in Matlab. For Pareto distribution, each record is assigned a weight which decides the usage of a record. After the records are generated, based on a coin toss, it is decided whether the next operation will be a read or a write. Every time the GC is accessed, details such as amount of bytes moved, blocks erased, are captured. These details are then used to plot the required graphs. 
-
-%-----------------------------------------------------------------------------------
 \section{Related Work}
+\subsection{An Age-Threshold Algorithm for Garbage Collection in Log-Structured Arrays and File Systems}
+	This paper compares the Greedy and Cost-Benefit algorithm with their algorithm called "Age-Threshold algorithm". Greedy considers those segments for Garbage Collection that has the least amount of active records or in other words can yield the maximum amount of space. Cost-Benefit considers those segments that will yield the maximum space but at the same time, are above a certain age. Age-Threshold considers those segments that are above a threshold. Age is determined by means of a clock. When data is moved from one segment to another by GC, the age of the new segment is the old + 1. But when a segment is erased and then new data is written, the age starts from 0. 
 
+\subsection{Cleaning Policies in Mobile Computers Using Flash Memory}
+	This paper compares the Greedy, Cost-Benefit with their algorithm - CAT (Cost Age Time). CAT algorithm claims to reduce the number of erase operations performed on a block while evenly wearing out the flash at the same time. It considers the age of the data, the cleaning cost and the number of times a segment has been erased. A segment is chosen such that the formula $CleaningCost * 1/Age * Count of cleaning$ is minimized. It also considers different ways of redistributing data (within the same block and across several blocks). The algorithm is compared for data patterns such as those with varying localities of reference, uniform access and so on.
 
+	Grouping data across segments based on their hotness degree is similar to generational algorithms. There are algorithms on opposite ends of the spectrum. One one end there are algorithms that claim longer the age of a block, the more likely to have inactive data. The other end of spectrum, algorithms claim that longer the data is not accessed, higher they can be moved to generations.
+
+In generational, the problem is that there is a large amount of hot data that is being marked as cold. Very soon after the data is moved to a higher generation, data tends to get inactivated. This results in wasted move cost. Most of the inefficiency comes from thinking of hot data as cold (move hot data too soon). For Uniform, FIFE is the best, but for Pareto age definitely has to be considered. 
+
+\subsection{Questions}
+	What is the recommended algorithm for Pareto distribution? 
+	Are any of the generational algorithms good or should they not be used?
