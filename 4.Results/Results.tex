@@ -16,7 +16,7 @@
 
 %=====================================================================
 \subsection{Uniform Distribution}
-	Results only for individual GC algorithms against the traffic patterns.
+	Figure~\ref{FIFE-Uniform-EffVsFull} shows a gradual drop in efficiency for the FIFE as fullness increases. This is because as fullness increases the amount of inactive records per block decreases and the GC has to work harder to find space for new records. The corresponding figure~\ref{LAC-Uniform-EffVsFull} for LAC has almost the same pattern as that for FIFE. The figures that depict the read/write/erase costs show that majority of the work is erasing blocks which contributes the most towards the drop in efficiency.
 
 \subsubsection{FIFE}
 
@@ -61,6 +61,8 @@
 
 \subsubsection{3-Generation}
 
+Figure~\ref{3Gen-Uniform-EffVsFull} is almost a linear drop in efficiency. As can be observed, the drop in efficiency is much faster for 3 generation GCs when compared with FIFE algorithms. This is because the amount of blocks in the first generation is less than that in FIFE. Also, when the GC is invoked, it moves all active records from the lower to the higher generations and it has to erase the entire first generation. Even though no effort is spent in moving around active records at regular intervals, the overall effort vs writing a new record is much more than that in FIFE.
+
 \begin{figure}[H]
         \centering
         \begin{subfigure}[b]{0.4\textwidth}
@@ -80,6 +82,8 @@
 
 
 \subsubsection{N-Generation}
+
+Figure~\ref{NGen-Uniform-EffVsFull} shows a sharp drop in efficiency even at lower fullness levels. This is because only one block is used for writing new records and the GC has to move records to higher generations to make space for new incoming records. Ideally this algorithm should have high efficiency for data with high locality of reference. We conducted a few experiments on this premise by generating data that has high locality of reference. But even in that case, we observed a similar behaviour. This is again due to the fact that there is very little space for writing new records.
 
 \begin{figure}[H]
         \centering
@@ -103,6 +107,8 @@
 \subsection{Pareto Distribution}
 
 \subsubsection{FIFE}
+
+Figures~\ref{FIFE-Pareto-EffVsFull}~\ref{LAC-Pareto-EffVsFull} are similar to those for Uniform Distribution, except that at lower fullness levels, the drop in efficiency is much faster. This is due to the cost involved in moving records that are ``cold''. In Uniform, there is a higher chance for every record to be invalidated, whereas in Pareto, few records are inactivated more often. Pareto distribution has more ``cold'' data than Uniform and hence contributes more towards the move cost. 
 
 \begin{figure}[H]
         \centering
@@ -140,7 +146,9 @@
 \end{figure}
 
 
-\subsubsection{3-Generation}
+\subsubsection{Generational}
+
+Figures~\ref{3Gen-Pareto-EffVsFull}~\ref{NGen-Pareto-EffVsFull}~\ref{Eta-NGen-Pareto-EffVsFull} show a similar behaviour to that of Uniform distribution. These set of graphs are counter-intuitive and therefore have to be analyzed a little deeper. For instance, in 3-Generation GC, when the first generation becomes full and when the GC is invoked, the active records in Gen-1 are moved to Gen-2. This pattern continues and at steady state, Gen-2 has both active and inactive records and Gen-3 also has the same, but has a higher distribution of active records. Though more space is created during one cycle of GC, the cost per GC over the life-time of the flash is almost the same for Pareto and for Uniform. Therefore, we decided not to consider erase cost, but only the move cost. 
 
 \begin{figure}[H]
         \centering
@@ -159,7 +167,7 @@
 \end{figure}
 
 
-\subsubsection{N-Generation}
+
 
 \begin{figure}[H]
         \centering
@@ -178,7 +186,6 @@
 \end{figure}
 
 
-\subsubsection{Eta-N-Generation}
 
 \begin{figure}[H]
         \centering
@@ -198,12 +205,14 @@
 
 
 %---------------------------------------------------------------------------------------------------------------------------------------
-\subsection{BiModal Distribution}
-	No individual graphs generated.
+%\subsection{BiModal Distribution}
+%	No individual graphs generated.
 
 
 %====================================================================
-\subsection{Efficiency Vs Fullness and other graphs - five GCs}
+\subsection{Efficiency Vs Fullness - Combined Graphs}
+
+Figures~\ref{Uniform-AllGC-EffVsFull}~\ref{Pareto-AllGC-EffVsFull}~\ref{BiModal-AllGC-EffVsFull} show the plots for the various GCs. As can be observed, the Round-Robin style of algorithms occupy the top half of the chart and the generational algorithms occupying the bottom half. The 3-Gen algorithm comes in the middle of the chart. The reason behind this has been mentioned in the previous results.
 
 \subsubsection{Uniform Distribution}
 
