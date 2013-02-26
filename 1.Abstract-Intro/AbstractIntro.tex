@@ -1,0 +1,83 @@
+\section{Abstract}
+	The performance results for five different Garbage Collection (GC) algorithms for Non-Volatile Memory Devices for three access patterns are presented in this report. The access patterns include a long-tailed distribution as well as Uniform distribution. The results indicate that Round-Robin style GC algorithms perform much better in all cases than Generational algorithms. This is counter-intuitive to the existing norms. Invocation of the GC in Flash devices is determined by the fullness of the device. Even at low fullness levels, Generational GCs have very low efficiency. In this paper, we compare the efficiency and the time taken for the individual GCs at fullness levels ranging from 2\% to 98\%.  Existing research looks into using Flash as storage for data and RAM as cache \cite{Gupta09, Budilovsky11, Tjioe12}. We analyze the performance of a Flash when it is used in place of a RAM. A simulator for the Flash file system as well as the GC algorithms were coded in Matlab. We compare the performance of five different GC algorithms against three traffic patterns. Our experiments indicate that Round-Robin style algorithms have better efficiency than Generational algorithms.\\
+
+\subsection*{Keywords}
+	Garbage Collection, Flash memory, Statistical access pattern.
+
+%-----------------------------------------------------------------------------------
+\section{Introduction}
+		An important component that has an overhead and affects the performance of the storage system is the Garbage Collector (GC) algorithm. This report quantifies the performance of different GCs against different statistical traffic patterns such as Uniform, Pareto and Bi-Modal. Based on prior experiments, we have observed that the traffic pattern for the data can occur in short bursts or can arrive at regular intervals. This is the reason why we chose to select the afore-mentioned traffic patterns. \\
+
+	Updates to exisitng records cannot happen in-place in Flash devices. The earlier record has to be marked inactive and the newer version of the record has to be written to a new location. After a period of time, the flash becomes full and there is no space left for new records to be written. This is when the GC is invoked whose purpose is to create space for the new records. The space is created by moving active records from one block to another block and erasing the earlier block. When erase operations take place, it has to happen on an entire block and not on individual records. There are several options in selecting a block to be Garbage Collected. It could be the oldest one or one that yields the maximum space. We considered both of these options and call the algorithms FIFE - First Insert First Erase and LAC - Least Active Clean. LAC is a type of Greedy algorithm that always chooses the block that has the least amount of active records and hence contributes the lowest to the move cost. \\
+
+	But depending on the data pattern, it may so happen that the GC keeps moving around a set of records which is considered ``cold''. ``Cold'' data are those that are never or rarely accessed. Therefore it makes sense to dump this data to a portion of the Flash ear-marked for this purpose. This is the idea behind the Generational algorithms where the entire Flash is divided into different number of generations. We considered different flavors of such Generational algorithms such as 3-Gen -- where the flash is divided into three generations; N-Gen -- where each of the N-blocks in the Flash is a generation.\\
+
+	For random and uniform data access patterns, we expected the Round-Robin class of algorithms to out-perform the generational algorithms. The intuition behind the generational algorithms is that they would be efficient for a class of data access patterns such as those with high localities of reference. But as the results in latter half of the paper show, our intuition is incorrect and the Round-Robin algorithms out-perform the rest of the algorithms for all classes of patterns we could throw at it. \\
+
+	A challenge that we faced before starting with our work was the lack of real-world applications (like an app store) that can simulate various access patterns. Therefore we created the benchmarking applications in Matlab. The benchmarking applications were created to simulate patterns of access such as Uniform, heavy-tailed (high locality of reference) and Bi-Modal. The main goal behind this work was to find out the most efficienct GC algorithm for a given traffic pattern. In order to measure efficiency, the parameters we used were costs involved in writing and moving records and erasing blocks. The simulations were repeated for 100,000 times mimicing the life-time of a typical Flash. \\
+
+	In this paper, we present our work in analyzing five different GC algorithms and compare their performances against various parameters. We also present the theoretical model behind our simulation and explain the reason behind the results we have obtained. A major contribution of our work is to measure the performance of Flash devices against traffic patterns that are generally observed in practice. \\
+The major goals of our work are:
+\begin{itemize}
+\item To find out if Flash can work as a good primary storage system. 
+\item To create performance benchmarks and understand which Garbage Collection algorithm is better. 
+\item To create statistical models to test the GC algorithms.
+\end{itemize}
+
+	The report is organized as follows: section 3 gives details on related work. Section 4 mentions about the current state-of-the-art in Flash algorithms and section 5 provides details on the Mathematical models behind our simulations. We conclude by outlining our results in section 6, details about our simulator in section 7 and finally mention about future work in this area.
+
+
+%-----------------------------------------------------------------------------------
+\subsection{Methodology}
+The GC and the applications were implemented in Matlab 2011b. The tests were run on the Ohio Super Computer center’s cluster called Oakley. The fullness level ranges from 2% to 98% and the simulations were run for 100,000 read/write accesses per fullness level. The simulations are done for all three traffic patterns for all five GC algorithms.
+
+%-----------------------------------------------------------------------------------
+\subsection{Implementation details:}
+Records were generated for different fullness levels. We used the rand function in matlab which generates numbers with Uniform distribution. For Pareto, we added a weight (that followed a long-tail distribution) to the numbers which decides the usage of a record.
+We simulated an application which is both equally read and write dominant. We also tested an application which has only writes. After the records are generated, based on a coin toss, it is decided whether the next operation will be a read or a write. Every time the GC is accessed, details such as amount of bytes moved, blocks erased, are captured. These details are then used to plot the required graphs. 
+
+%-----------------------------------------------------------------------------------
+\section{Background}
+	Flash memory is a powerful and cost-effective solid-state non volatile storage technology that is widely being used in mobile devices and other embedded devices. Compared to traditional Hard Disk Drives, they have low power consumption and a small size. Embedded devices are constrained by power and low memory capacity. Hence there is a need to have a very efficient primary storage system that allows fast read and write operations and thereby less power consumption. Flash devices generally have fast read accesses but have very slow write accesses. \\
+
+\begin{center}
+   \begin{tabular} {|  c | c | c | }
+       \hline
+	{\bf Read time(ms)} & {\bf Write time (ms)} & {\bf Erase time (ms)} \\ \hline
+	4 & 5 & 6 \\ 
+       \hline
+   \end{tabular}
+\end{center}
+
+There are 2 major Flash devices available today - NAND and NOR. NAND flash has a very small cell size and is mainly used for storage of large amounts of data as its cost-per-bit is very low compared to NOR \cite{Toshiba}. NAND flash is organized into blocks and each block is divided into pages. Block size of a typical NAND flash is 16KB and the page size can be 512B (32 pages in a block). Read and Write operations happen take place on pages whereas erase happens on blocks. NOR flash on the other hand, have individual cells connected in parallel which allow it to achieve random access. This enables it to achieve short read times and allow individual bits to be set (called reprogramming). This has the advantage that it can execute code, a feature called eXecute-In-Place (XIP). \\
+
+Every block on a NAND flash can be written-to or erased only a limited number of times (in order of 1 million or $10^6$ cycles). Writing to or erasing a block beyond this limit can result in ``wearing" out of the Flash, which can lead to write failures or can return invalid data for read operations. Data cannot be written over already written areas (called in-place update). Data can only be written to areas that have already been erased. Therefore if some data has to be updated on the flash, it is first written to a new area and the old data is marked invalid. This is called out-of-place-update. After many cycles of writes, the entire flash is fragmented with valid and invalid data and the flash quickly runs out of space for new data. This is when the Flash invokes the Garbage Collector whose task is to collect all valid data in a block, write it to a new location and erase the old block. This paves the way for new data to be written to the flash. But this operation of moving data to a new location and erasing a block is costly and has to be kept to a minimum. Based on the above points, some of the challenges for a good GC algorithm is: (a) To maintain ``wear-levelling" of the flash blocks (b) Reduce the amount of time taken to move data and erase blocks. \\
+
+%\begin{center}
+%%\captionof{table}{A comparison of NAND and NOR Flash} \label{NANDvsNOR}
+%   \begin{tabular} {|  c | c | c | }
+%       \hline
+%	{\bf Design Characteristic} & {\bf NAND flash} & {\bf NOR Flash} \\ \hline
+%	Cost-per-bit & Low & High \\ \hline
+%	File Storage use & Easy & Hard \\ \hline
+%	Code execution & Hard & Easy\\ \hline
+%	Capacity & High & Low\\ \hline
+%	Write speed & High & Low\\ \hline
+%	Read speed & Medium & High\\ \hline
+%	Active power & Low & High\\ \hline
+%	Standby power & Medium & Low\\
+%       \hline
+%   \end{tabular}
+%\end{center}
+
+%Table~\ref{NANDvsNOR} compares the characteristics of NAND and NOR Flash devices \cite{Toshiba}. 
+%\\
+
+\subsection{Log Structured File System}
+	Due to increasing capacity and reduction in accessing times of RAM, reads have become quite fast and writes take up bulk of the time in a typical embedded device. Hence there is a need for a file system that provides fast write access. A \emph{log structured file system} is one such system that writes data sequentially in a log-like manner \cite{Rosenblum91}. This reduces the write time as there is no structure other than logs in a device to be maintained and thereby reducing the amount of data seeks. But in order for a log-structured file system to operate efficiently, it needs to have large amounts of free space to write new data. LFS also allow fast recovery from crashes which is not present in traditional file systems as they have to scan the entire set of data in order to build the index. \\
+
+	The Log File System that we implement makes use of three pointers which facilitate the write operations. Log pointer always points at a location where the write operation can take place. Clean Pointer indicates the location in the Flash until which there are no active records and the Erase pointer which always moves one block at a time points at the block which was last erased. \\
+
+	There are three major GC algorithms that have been studied for Log-Structured File Systems - Greedy, Cost-Benefit analysis and Cost-Age Time (CAT). Greedy algorithms select those data blocks that can yield the most free space, whereas a cost-benefit algorithm selects blocks based on the free space as well as the age of the segment \cite{Menon98, Kwon07}. CAT reduces the erase operations by segregating the hot from the cold data \cite{Chiang99}. A major advantage of this approach is that it takes wear-levelling into account before cleaning a block. \\
+
+	In Solid State Devices such as NAND and NOR based Flash, new data is always written out-of-place. In a Log-Structured File System, this reduces the amount of free space and a Garbage Collector algorithm is invoked which defragments the device by moving all valid data together and erasing the invalid data. This is a critical factor in the performance and life-time of a Flash device. 
